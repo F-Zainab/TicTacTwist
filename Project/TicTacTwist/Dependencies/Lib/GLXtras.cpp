@@ -20,7 +20,7 @@ int PrintGLErrors() {
             // do not call Debug() while looping through errors, so accumulate in buf
     }
     if (nErrors)
-		printf("%s\n", nErrors? buf : "no GL errors");
+        printf("%s\n", nErrors? buf : "no GL errors");
     return nErrors;
 }
 
@@ -43,18 +43,18 @@ void PrintVersionInfo() {
 
 void PrintExtensions() {
     const GLubyte *extensions = glGetString(GL_EXTENSIONS);
-	const char *skip = "(, \t\n";
-	char buf[100];
+    const char *skip = "(, \t\n";
+    char buf[100];
     printf("\nGL extensions:\n");
-		if (extensions)
-			for (char *c = (char *) extensions; *c; ) {
-					c += strspn(c, skip);
-					size_t nchars = strcspn(c, skip);
-					strncpy(buf, c, nchars);
-					buf[nchars] = 0;
-					printf("  %s\n", buf);
-					c += nchars;
-	}
+        if (extensions)
+            for (char *c = (char *) extensions; *c; ) {
+                    c += strspn(c, skip);
+                    size_t nchars = strcspn(c, skip);
+                    strncpy(buf, c, nchars);
+                    buf[nchars] = 0;
+                    printf("  %s\n", buf);
+                    c += nchars;
+    }
 }
 
 void PrintProgramLog(int programID) {
@@ -99,29 +99,29 @@ void PrintProgramUniforms(int programID) {
 // Compilation
 
 GLuint CompileShaderViaFile(const char *filename, GLint type) {
-		FILE* fp = fopen(filename, "r");
-		if (fp == NULL)
-			return 0;
-		fseek(fp, 0L, SEEK_END);
-		long maxSize = ftell(fp);
-		fseek(fp, 0L, SEEK_SET);
-		char *buf = new char[maxSize+1], c;
-		int nchars = 0;
-		while ((c = fgetc(fp)) != EOF)
-			buf[nchars++] = c;
-		buf[nchars] = 0;
-		fclose(fp);
-		return CompileShaderViaCode((const char **) &buf, type);
+        FILE* fp = fopen(filename, "r");
+        if (fp == NULL)
+            return 0;
+        fseek(fp, 0L, SEEK_END);
+        long maxSize = ftell(fp);
+        fseek(fp, 0L, SEEK_SET);
+        char *buf = new char[maxSize+1], c;
+        int nchars = 0;
+        while ((c = fgetc(fp)) != EOF)
+            buf[nchars++] = c;
+        buf[nchars] = 0;
+        fclose(fp);
+        return CompileShaderViaCode((const char **) &buf, type);
 }
 
 GLuint CompileShaderViaCode(const char **code, GLint type) {
     GLuint shader = glCreateShader(type);
-	if (!shader) {
-		PrintGLErrors();
-		return false;
-	}
+    if (!shader) {
+        PrintGLErrors();
+        return false;
+    }
     glShaderSource(shader, 1, code, NULL);
-	glCompileShader(shader);
+    glCompileShader(shader);
     // check compile status
     GLint result;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
@@ -148,22 +148,22 @@ GLuint CompileShaderViaCode(const char **code, GLint type) {
 // Linking
 
 GLuint LinkProgramViaCode(const char **vertexCode, const char **pixelCode) {
-	GLuint vshader = CompileShaderViaCode(vertexCode, GL_VERTEX_SHADER);
-	GLuint pshader = CompileShaderViaCode(pixelCode, GL_FRAGMENT_SHADER);
-	return LinkProgram(vshader, pshader);
+    GLuint vshader = CompileShaderViaCode(vertexCode, GL_VERTEX_SHADER);
+    GLuint pshader = CompileShaderViaCode(pixelCode, GL_FRAGMENT_SHADER);
+    return LinkProgram(vshader, pshader);
 }
 
 GLuint LinkProgramViaCode(const char **vertexCode, const char **tessellationControlCode, const char **tessellationEvalCode, const char **geometryCode, const char **pixelCode) {
-	GLuint vshader = CompileShaderViaCode(vertexCode, GL_VERTEX_SHADER);
-	GLuint tcshader = tessellationControlCode? CompileShaderViaCode(tessellationControlCode, GL_TESS_CONTROL_SHADER) : 0;
-	GLuint teshader = tessellationEvalCode? CompileShaderViaCode(tessellationEvalCode, GL_TESS_EVALUATION_SHADER) : 0;
-	GLuint gshader = geometryCode? CompileShaderViaCode(geometryCode, GL_GEOMETRY_SHADER) : 0;
-	GLuint pshader = CompileShaderViaCode(pixelCode, GL_FRAGMENT_SHADER);
-	return LinkProgram(vshader, tcshader, teshader, gshader, pshader);
+    GLuint vshader = CompileShaderViaCode(vertexCode, GL_VERTEX_SHADER);
+    GLuint tcshader = tessellationControlCode? CompileShaderViaCode(tessellationControlCode, GL_TESS_CONTROL_SHADER) : 0;
+    GLuint teshader = tessellationEvalCode? CompileShaderViaCode(tessellationEvalCode, GL_TESS_EVALUATION_SHADER) : 0;
+    GLuint gshader = geometryCode? CompileShaderViaCode(geometryCode, GL_GEOMETRY_SHADER) : 0;
+    GLuint pshader = CompileShaderViaCode(pixelCode, GL_FRAGMENT_SHADER);
+    return LinkProgram(vshader, tcshader, teshader, gshader, pshader);
 }
 
 GLuint LinkProgram(GLuint vshader, GLuint pshader) {
-	return LinkProgram(vshader, 0, 0, 0, pshader);
+    return LinkProgram(vshader, 0, 0, 0, pshader);
 }
 
 GLuint LinkProgram(GLuint vshader, GLuint tcshader, GLuint teshader, GLuint gshader, GLuint pshader) {
@@ -174,12 +174,12 @@ GLuint LinkProgram(GLuint vshader, GLuint tcshader, GLuint teshader, GLuint gsha
     if (program > 0) {
         // attach shaders to program
         glAttachShader(program, vshader);
-		if (tcshader > 0)
-			glAttachShader(program, tcshader);
-		if (teshader > 0)
-			glAttachShader(program, teshader);
-		if (gshader > 0)
-			glAttachShader(program, gshader);
+        if (tcshader > 0)
+            glAttachShader(program, tcshader);
+        if (teshader > 0)
+            glAttachShader(program, teshader);
+        if (gshader > 0)
+            glAttachShader(program, gshader);
         glAttachShader(program, pshader);
         // link and verify
         glLinkProgram(program);
@@ -192,155 +192,155 @@ GLuint LinkProgram(GLuint vshader, GLuint tcshader, GLuint teshader, GLuint gsha
 }
 
 GLuint LinkProgramViaFile(const char *vertexShaderFile, const char *pixelShaderFile) {
-	GLuint vshader = CompileShaderViaFile(vertexShaderFile, GL_VERTEX_SHADER);
-	GLuint fshader = CompileShaderViaFile(pixelShaderFile, GL_FRAGMENT_SHADER);
-	return LinkProgram(vshader, fshader);
+    GLuint vshader = CompileShaderViaFile(vertexShaderFile, GL_VERTEX_SHADER);
+    GLuint fshader = CompileShaderViaFile(pixelShaderFile, GL_FRAGMENT_SHADER);
+    return LinkProgram(vshader, fshader);
 }
 
 int CurrentProgram() {
-	int program = 0;
-	glGetIntegerv(GL_CURRENT_PROGRAM, &program);
-	return program;
+    int program = 0;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &program);
+    return program;
 }
 
 // Uniform Access
 
 bool Bad(bool report, const char *name) {
-	if (report)
-		printf("can't find named uniform: %s\n", name);
-	return false;
+    if (report)
+        printf("can't find named uniform: %s\n", name);
+    return false;
 }
 
 bool SetUniform(int program, const char *name, int val, bool report) {
-	GLint id = glGetUniformLocation(program, name);
-	if (id < 0)
-		return Bad(report, name);
-	glUniform1i(id, val);
-	return true;
+    GLint id = glGetUniformLocation(program, name);
+    if (id < 0)
+        return Bad(report, name);
+    glUniform1i(id, val);
+    return true;
 }
 /*
 bool SetUniform(int program, const char *name, GLuint val, bool report) {
-	GLint id = glGetUniformLocation(program, name);
-	if (id < 0)
-		return Bad(report, name);
-	glUniform1ui(id, val);
-	return true;
+    GLint id = glGetUniformLocation(program, name);
+    if (id < 0)
+        return Bad(report, name);
+    glUniform1ui(id, val);
+    return true;
 } */
 
 bool SetUniformv(int program, const char *name, int count, int *v, bool report) {
-	GLint id = glGetUniformLocation(program, name);
-	if (id < 0)
-		return Bad(report, name);
-	glUniform1iv(id, count, v);
-	return true;
+    GLint id = glGetUniformLocation(program, name);
+    if (id < 0)
+        return Bad(report, name);
+    glUniform1iv(id, count, v);
+    return true;
 }
 
 bool SetUniform(int program, const char *name, float val, bool report) {
-	GLint id = glGetUniformLocation(program, name);
-	if (id < 0)
-		return Bad(report, name);
-	glUniform1f(id, val);
-	return true;
+    GLint id = glGetUniformLocation(program, name);
+    if (id < 0)
+        return Bad(report, name);
+    glUniform1f(id, val);
+    return true;
 }
 
 bool SetUniformv(int program, const char *name, int count, float *v, bool report) {
-	GLint id = glGetUniformLocation(program, name);
-	if (id < 0)
-		return Bad(report, name);
-	glUniform1fv(id, count, v);
-	return true;
+    GLint id = glGetUniformLocation(program, name);
+    if (id < 0)
+        return Bad(report, name);
+    glUniform1fv(id, count, v);
+    return true;
 }
 
 bool SetUniform(int program, const char *name, vec2 v, bool report) {
-	GLint id = glGetUniformLocation(program, name);
-	if (id < 0)
-		return Bad(report, name);
-	glUniform2f(id, v.x, v.y);
-	return true;
+    GLint id = glGetUniformLocation(program, name);
+    if (id < 0)
+        return Bad(report, name);
+    glUniform2f(id, v.x, v.y);
+    return true;
 }
 
 bool SetUniform(int program, const char *name, vec3 v, bool report) {
-	GLint id = glGetUniformLocation(program, name);
-	if (id < 0)
-		return Bad(report, name);
-	glUniform3f(id, v.x, v.y, v.z);
-	return true;
+    GLint id = glGetUniformLocation(program, name);
+    if (id < 0)
+        return Bad(report, name);
+    glUniform3f(id, v.x, v.y, v.z);
+    return true;
 }
 
 bool SetUniform(int program, const char *name, vec4 v, bool report) {
-	GLint id = glGetUniformLocation(program, name);
-	if (id < 0)
-		return Bad(report, name);
-	glUniform4f(id, v.x, v.y, v.z, v.w);
-	return true;
+    GLint id = glGetUniformLocation(program, name);
+    if (id < 0)
+        return Bad(report, name);
+    glUniform4f(id, v.x, v.y, v.z, v.w);
+    return true;
 }
 
 bool SetUniform(int program, const char *name, vec3 *v, bool report) {
-	GLint id = glGetUniformLocation(program, name);
-	if (id < 0)
-		return Bad(report, name);
-	glUniform3fv(id, 1, (float *) v);
-	return true;
+    GLint id = glGetUniformLocation(program, name);
+    if (id < 0)
+        return Bad(report, name);
+    glUniform3fv(id, 1, (float *) v);
+    return true;
 }
 
 bool SetUniform(int program, const char *name, vec4 *v, bool report) {
-	GLint id = glGetUniformLocation(program, name);
-	if (id < 0)
-		return Bad(report, name);
-	glUniform4fv(id, 1, (float *) v);
-	return true;
+    GLint id = glGetUniformLocation(program, name);
+    if (id < 0)
+        return Bad(report, name);
+    glUniform4fv(id, 1, (float *) v);
+    return true;
 }
 
 bool SetUniform3(int program, const char *name, float *v, bool report) {
-	GLint id = glGetUniformLocation(program, name);
-	if (id < 0)
-		return Bad(report, name);
-	glUniform3fv(id, 1, v);
-	return true;
+    GLint id = glGetUniformLocation(program, name);
+    if (id < 0)
+        return Bad(report, name);
+    glUniform3fv(id, 1, v);
+    return true;
 }
 
 bool SetUniform3v(int program, const char *name, int count, float *v, bool report) {
-	GLint id = glGetUniformLocation(program, name);
-	if (id < 0)
-		return Bad(report, name);
-	glUniform3fv(id, count, v);
-	return true;
+    GLint id = glGetUniformLocation(program, name);
+    if (id < 0)
+        return Bad(report, name);
+    glUniform3fv(id, count, v);
+    return true;
 }
 
 bool SetUniform4v(int program, const char *name, int count, float *v, bool report) {
-	GLint id = glGetUniformLocation(program, name);
-	if (id < 0)
-		return Bad(report, name);
-	glUniform4fv(id, count, v);
-	return true;
+    GLint id = glGetUniformLocation(program, name);
+    if (id < 0)
+        return Bad(report, name);
+    glUniform4fv(id, count, v);
+    return true;
 }
 
 bool SetUniform(int program, const char *name, mat4 m, bool report) {
-	GLint id = glGetUniformLocation(program, name);
-	if (id < 0)
-		return Bad(report, name);
-	glUniformMatrix4fv(id, 1, true, (float *) &m[0][0]);
-	return true;
+    GLint id = glGetUniformLocation(program, name);
+    if (id < 0)
+        return Bad(report, name);
+    glUniformMatrix4fv(id, 1, true, (float *) &m[0][0]);
+    return true;
 }
 
 // Attribute Access
 
 void DisableVertexAttribute(int program, const char *name) {
-	GLint id = glGetAttribLocation(program, name);
-	if (id >= 0)
-		glDisableVertexAttribArray(id);
+    GLint id = glGetAttribLocation(program, name);
+    if (id >= 0)
+        glDisableVertexAttribArray(id);
 }
 
 int EnableVertexAttribute(int program, const char *name) {
-	GLint id = glGetAttribLocation(program, name);
-	if (id >= 0)
-		glEnableVertexAttribArray(id);
-	return id;
+    GLint id = glGetAttribLocation(program, name);
+    if (id >= 0)
+        glEnableVertexAttribArray(id);
+    return id;
 }
 
 void VertexAttribPointer(int program, const char *name, GLint ncomponents, GLsizei stride, const GLvoid *offset) {
-	GLuint id = EnableVertexAttribute(program, name);
-	if (id < 0)
+    GLuint id = EnableVertexAttribute(program, name);
+    if (id < 0)
         printf("cant find attribute %s\n", name);
     glVertexAttribPointer(id, ncomponents, GL_FLOAT, GL_FALSE, stride, offset);
 }

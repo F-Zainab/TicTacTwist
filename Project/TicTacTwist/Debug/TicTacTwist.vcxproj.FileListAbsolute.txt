@@ -1,0 +1,2 @@
+C:\Users\Rakan\Documents\SeattleU\TicTacTwist\Project\TicTacTwist\Debug\TicTacTwist.exe
+C:\Users\Rakan\Documents\SeattleU\TicTacTwist\Project\TicTacTwist\Debug\TicTacTwist.pdb
