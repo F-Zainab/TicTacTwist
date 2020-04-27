@@ -12,10 +12,7 @@ int WINDOW_WIDTH = 600;
 
 
 void processInput(GLFWwindow* window);
-
-
-
-
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 
 const char* vertexShaderSource = "#version 330 core\n"
@@ -47,7 +44,8 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    // Make window unresizable:
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 
     // Create a window:
@@ -70,7 +68,7 @@ int main()
     
     // Set the view port coordinates & dimensions:
     glViewport(0, 0, WINDOW_HEIGHT, WINDOW_WIDTH);
-
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 
 
@@ -209,5 +207,5 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.
-    glViewport(0, 0, width, height);
+    glViewport(0, 0, height, width);
 }
