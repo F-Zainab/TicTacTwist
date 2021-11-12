@@ -1,0 +1,9 @@
+{
+	"name": "fzainabADFTutorialDataFactory",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "3df3517a-80de-476a-9cf8-426f8a999d87",
+		"tenantId": "6a20aeb9-fe6f-4df2-bffd-34ca105b6ff6"
+	}
+}
